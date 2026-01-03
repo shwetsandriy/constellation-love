@@ -1,0 +1,215 @@
+* { box-sizing: border-box; }
+:root { --pink: #ff69b4; --red: #ff3c6e; --bg: #120c18; --card: rgba(20,14,28,.72); }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: #f5f5f5;
+  background: var(--bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.bg {
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(900px 600px at 18% 18%, rgba(255,105,180,.22), transparent 60%),
+    radial-gradient(900px 600px at 78% 22%, rgba(255,60,110,.16), transparent 60%),
+    radial-gradient(1200px 800px at 50% 90%, rgba(255,105,180,.10), transparent 60%);
+}
+
+.top {
+  position: relative;
+  padding: 18px 16px 10px;
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+h1 { margin: 10px 0 6px; font-size: 34px; letter-spacing: .2px; }
+.sub { margin: 0; opacity: .9; }
+
+.sky {
+  position: relative;
+  width: min(980px, calc(100% - 32px));
+  height: min(70vh, 640px);
+  margin: 12px auto 26px;
+  border-radius: 22px;
+  background: rgba(0,0,0,.20);
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 18px 60px rgba(0,0,0,.35);
+  overflow: hidden;
+}
+
+#starsCanvas, #linesSvg, .stars-layer {
+  position: absolute; inset: 0;
+}
+
+.stars-layer { pointer-events: none; }
+
+.star {
+    pointer-events: auto;
+    position: absolute;
+    left: 0;
+    top: 0;
+  
+    /* координата = центр крапки */
+    width: 0;
+    height: 0;
+  
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+  
+    /* масштаб крапки задаємо змінною */
+    --dotScale: 1;
+  }
+  
+  .star .dot {
+    position: absolute;
+    left: 0;
+    top: 0;
+  
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  
+    /* ВАЖЛИВО: центруємо крапку точно в координаті */
+    transform: translate(-50%, -50%) scale(var(--dotScale));
+  
+    background: rgba(255,255,255,.92);
+    box-shadow:
+      0 0 10px rgba(255,255,255,.6),
+      0 0 18px rgba(255,105,180,.35);
+  
+    animation: twinkle 2.2s infinite ease-in-out;
+  }
+  
+  .star.big .dot {
+    width: 14px;
+    height: 14px;
+    box-shadow:
+      0 0 12px rgba(255,255,255,.65),
+      0 0 26px rgba(255,60,110,.45);
+  }
+  
+  /* Підпис НЕ впливає на позицію/центр зірки */
+  .star .label {
+    position: absolute;
+    left: 0;
+    top: 12px; /* нижче крапки */
+    transform: translateX(-50%);
+    color: white;
+    margin-top: 0;
+    font-size: 12px;
+    opacity: .85;
+    text-shadow: 0 2px 12px rgba(0,0,0,.6);
+    white-space: pre-line;
+  }
+  
+  /* Щоб позиція не "пливла", анімуємо лише opacity/світіння (не transform) */
+  @keyframes twinkle {
+    0%, 100% { opacity: .75; filter: drop-shadow(0 0 0 rgba(0,0,0,0)); }
+    50% { opacity: 1; filter: drop-shadow(0 0 6px rgba(255,105,180,.35)); }
+  }
+
+#linesSvg line {
+  stroke: rgba(255, 105, 180, .45);
+  stroke-width: 2;
+  filter: drop-shadow(0 0 8px rgba(255,105,180,.25));
+}
+
+.hint {
+  position: absolute;
+  left: 14px; bottom: 12px;
+  font-size: 12px;
+  opacity: .85;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(0,0,0,.28);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+/* modal */
+.modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    padding: 16px;
+    background: rgba(0,0,0,.55);
+    z-index: 9999;
+  }
+
+.hidden { display: none !important; }
+
+.modal-card {
+    width: min(760px, 100%);
+    max-height: 92vh;          /* щоб точно влазило у екран */
+    overflow-y: auto;          /* ✅ тепер низ не обрізається, є скрол */
+    overflow-x: hidden;
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,.10);
+    box-shadow: 0 18px 60px rgba(0,0,0,.45);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+  
+    padding: 18px 18px 22px;
+    border-radius: 18px;
+  }
+  
+  /* кнопка закриття завжди зверху */
+  .close {
+    position: sticky;  
+    border: none;
+    background: transparent;
+    color: #fff;
+    top: 0;
+    cursor: pointer;
+    margin-left: auto;
+    z-index: 2;
+  }
+
+.modal-head h2 { margin: 2px 0 4px; font-size: 20px; }
+.mdate { font-size: 12px; opacity: .8; margin-bottom: 10px; }
+
+.mphoto {
+    width: 100%;
+    height: auto;
+    max-height: 52vh;          /* ✅ ключове: фото не забирає весь екран */
+    object-fit: contain;       /* щоб не обрізало фото */
+    border-radius: 14px;
+    display: block;
+    margin-top: 12px;
+}
+  
+
+.mtext {
+    margin-top: 12px;
+    line-height: 1.5;
+    padding-bottom: 8px;
+  }
+
+  .final-actions {
+    margin-top: 14px;
+    padding-top: 10px;
+  }
+.primary {
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-weight: 800;
+  background: var(--pink);
+  color: #140e1c;
+}
+
+/* hearts canvas overlay */
+.hearts {
+  position: fixed; inset: 0;
+  z-index: 60;
+  pointer-events: none;
+}

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Наше сузір’я</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="bg"></div>
+
+  <header class="top">
+    <h1 id="title">Наше сузір’я ✨</h1>
+    <p id="subtitle" class="sub">Натискай на зірки. Кожна — маленький спогад.</p>
+  </header>
+
+  <main class="sky" id="sky">
+    <!-- Зоряне тло -->
+    <canvas id="starsCanvas"></canvas>
+
+    <!-- Лінії сузір’я -->
+    <svg id="linesSvg" aria-hidden="true"></svg>
+
+    <!-- Тут з’являться "зірки" -->
+    <div id="starsLayer" class="stars-layer"></div>
+
+    <!-- підказка -->
+    <div class="hint">Порада: відкрий “Останню зірку” в кінці 💫</div>
+  </main>
+
+  <!-- Модалка -->
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button class="close" id="closeBtn" aria-label="Закрити">✕</button>
+      <div class="modal-head">
+        <h2 id="mTitle"></h2>
+        <div id="mDate" class="mdate"></div>
+      </div>
+
+      <img id="mPhoto" class="mphoto hidden" alt="Фото спогаду" />
+      <p id="mText" class="mtext"></p>
+
+      <div id="finalActions" class="final-actions hidden">
+        <button id="heartBtn" class="primary">Запустити серце ❤️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Canvas для сердечок -->
+  <canvas id="heartsCanvas" class="hearts hidden"></canvas>
+
+  <script src="./app.js"></script>
+</body>
+</html>
