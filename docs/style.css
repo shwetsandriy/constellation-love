@@ -171,6 +171,7 @@ h1 { margin: 10px 0 6px; font-size: 34px; letter-spacing: .2px; }
     cursor: pointer;
     margin-left: auto;
     z-index: 2;
+    font-size: 1rem;
   }
 
 .modal-head h2 { margin: 2px 0 4px; font-size: 20px; }
